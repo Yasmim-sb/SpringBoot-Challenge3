@@ -4,56 +4,59 @@ import br.com.compassUOL.challenge3.ms_user.dto.UserDTO;
 import br.com.compassUOL.challenge3.ms_user.entity.User;
 import br.com.compassUOL.challenge3.ms_user.enums.ErroCode;
 import br.com.compassUOL.challenge3.ms_user.exception.UserBadRequestException;
+import br.com.compassUOL.challenge3.ms_user.exception.UserNotFoundException;
 import br.com.compassUOL.challenge3.ms_user.repository.LoginRepository;
 import br.com.compassUOL.challenge3.ms_user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static java.sql.DriverManager.getConnection;
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
-
-    private final LoginRepository loginRepository;
     private final UserMapper userMapper= UserMapper.INSTANCE;
-    private  UserBadRequestException userBadRequestException;
 
-//    public LoginDTO createLogin(LoginDTO loginDTO) {
-//
-//        Login login = new Login();
-//        login.setId(loginDTO.getId());
-//        login.setEmail(loginDTO.getEmail());
-//        login.setPassword(loginDTO.getPassword());
-//
-//        return  userMapper.loginTOLoginDto(loginRepository.save(login));
-//
-//    }
 
-//    public UserDTO createUser(UserDTO user) {
-//        user.setFirstName(user.getFirstName());
-//        user.setLastName(user.getLastName());
-//        user.setCpf(user.getCpf());
-//        user.setBirthdate(user.getBirthdate());
-//        user.setEmail(user.getEmail());
-//        user.setPassword(user.getPassword());
-//        user.setActive(user.isActive());
-//        var convertion = userMapper.userDTOToUser(user);
-//        var save= userRepository.save(convertion);
-//        var ok = userMapper.userToUserDTO(save);
-//        return ok;
-//    }
-    public UserDTO createUser(UserDTO user){
-//
-//        if(this.userRepository.findByLogin(user.getEmail()) != null)
-////            return ResponseEntity.badRequest().build();
-//            return new UserBadRequestException(ErroCode.NOT_FOUND);
+    public Object createUser(UserDTO user){
+
+        if(this.userRepository.findByEmail(user.getEmail()) != null && userRepository.findByCpf(user.getCpf())!=null){
+            return new UserBadRequestException(ErroCode.NOT_FOUND);
+        }
+
         String encryptedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
-        User newUser = new User(user.getLogin(), encryptedPassword, user.getRole());
+        User newUser = new User(user.getEmail(), encryptedPassword, user.getCpf(), user.getFirstName(),
+        user.getBirthdate(), user.getLastName(), user.isActive());
         var repository = this.userRepository.save(newUser);
         return userMapper.userToUserDTO(repository);
+    }
+
+    public UserDTO updateUser(Long id,UserDTO user) {
+        User existingUser = userRepository.findById(id)
+        .orElseThrow(() -> new UserNotFoundException());
+
+        existingUser.setEmail(user.getEmail());
+        existingUser.setPassword(user.getPassword());
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setBirthdate(user.getBirthdate());
+        existingUser.setCpf(user.getCpf());
+        var save = userRepository.save(existingUser);
+        var convertion = userMapper.userToUserDTO(save);
+
+        return convertion;
+    }
+
+    public UserDTO updatePwd(Long id, String password) {
+        User userExisting = userRepository.findById(id)
+        .orElseThrow(() -> new UserNotFoundException());
+
+        userExisting.setId(userExisting.getId());
+        userExisting.setPassword(userExisting.getPassword());
+
+        var save = userRepository.save(userExisting);
+        var convertion = userMapper.userToUserDTO(save);
+        return convertion;
     }
 }

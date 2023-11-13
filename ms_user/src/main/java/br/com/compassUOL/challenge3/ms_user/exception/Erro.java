@@ -21,9 +21,9 @@ public class Erro {
         this.message = erroCode.getMessage();
     }
 
-//    public Erro(ErroCode erroCode){
-//        this.code = HttpStatus.INTERNAL_SERVER_ERROR.value();
-//        this.status = erroCode.name();
-//        this.message = erroCode.getMessage();
-//    }
+    public Erro(ErroCode erroCode){
+        this.code = HttpStatus.INTERNAL_SERVER_ERROR.value();
+        this.status = erroCode.name();
+        this.message = erroCode.getMessage();
+    }
 }

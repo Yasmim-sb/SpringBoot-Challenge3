@@ -1,13 +1,15 @@
 package br.com.compassUOL.challenge3.ms_user.dto;
 
-import br.com.compassUOL.challenge3.ms_user.user.UserRole;
-import jakarta.persistence.*;
+//import br.com.compassUOL.challenge3.ms_user.user.UserRole;
+
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -28,27 +30,30 @@ public class UserDTO {
 
     @NotBlank
     @Column(unique = true)
-    private String cpf;//formato correto
+    private String cpf;
 
-    private Date birthdate; //formato ISO-8601
+    @DateTimeFormat(pattern = "YYYY-MM-DD")
+    private Date birthdate;
 
     @NotBlank
     @Column(unique = true)
-    private String email;// formato valido
+    private String email;
 
     @NotBlank
     @Size(min = 6, message = "The field must have at least 6 characters")
-    private String password;//criptografada para ser salva no banco
+    private String password;
 
     @NotNull
     private boolean active;
 
-    private UserRole role;
-    private String login;
-
-    public UserDTO(String email, String password, UserRole userRole){
-        this.role=userRole;
+    public UserDTO(String firstName, String lastName, String email, String password, Date birthdate, String cpf, Long id) {
+        this.cpf=cpf;
+        this.firstName=firstName;
+        this.lastName=lastName;
         this.email=email;
         this.password=password;
+        this.cpf=cpf;
+        this.birthdate=birthdate;
+        this.id=id;
     }
 }

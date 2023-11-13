@@ -1,7 +1,6 @@
 package br.com.compassUOL.challenge3.ms_user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -29,5 +28,5 @@ public class Login {
 
     @NotBlank
     @Size(min = 6, message = "The field must have at least 6 characters")
-    private String password;//criptografar para salvar no banco
+    private String password;
 }

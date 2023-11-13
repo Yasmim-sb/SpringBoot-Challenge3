@@ -4,15 +4,19 @@ import br.com.compassUOL.challenge3.ms_user.enums.ErroCode;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+import java.io.Serial;
+
 @Getter
 public class UserNotFoundException extends RuntimeException{
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private final ErroCode erroCode;
     private final HttpStatus status;
 
-    public UserNotFoundException(ErroCode erroCode){
+    public UserNotFoundException() {
         super(ErroCode.NOT_FOUND.name());
-        this.erroCode = erroCode;
-        this.status= HttpStatus.NOT_FOUND;
+        this.status = HttpStatus.NOT_FOUND;
+        this.erroCode = ErroCode.NOT_FOUND;
     }
 }
