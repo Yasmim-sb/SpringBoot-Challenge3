@@ -1,0 +1,240 @@
+openapi: 3.0.3
+info:
+  title: ms user
+  description: |
+    - [User API allows user: register, update, looking by id ]
+  version: 1.0
+
+servers:
+  - url: "http://localhost:8080"
+    description: Generated server url
+paths:
+ /v1/users:
+
+  post:
+      summary: Add a new user
+      operationId: creatUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                cpf:
+                  type: string
+                birthdate:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                active:
+                  type: boolean
+
+            example:
+              - firstName: joao
+                lastName: guilherme
+                cpf: 408.446.570-42
+                birthdate: 2000-11-20
+                email: joao22@email.com
+                password: "123456789"
+                active: true
+        required: true
+      responses:
+        '201':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        '400':
+          description: Bad Request
+
+
+ /v1/users/login:
+   post:
+     summary: login
+     operationId: createLogin
+     requestBody:
+       content:
+         application/json:
+           schema:
+             type: object
+             properties:
+               email:
+                 type: string
+               password:
+                 type: string
+
+           example:
+               email: joao22@email.com
+               password: "123456789"
+       required: true
+     responses:
+       '201':
+         description: OK
+         content:
+           "*/*":
+             schema:
+               $ref: '#/components/schemas/LoginDTO'
+       '400':
+         description: Bad Request
+
+
+ /v1/users/{Id}:
+  get:
+     summary: Find user by ID
+     description: Returns a single user
+     operationId: getUserById
+     parameters:
+       - name: User Id
+         in: path
+         description: ID of user to return
+         required: true
+         schema:
+            type: integer
+            format: int64
+     responses:
+         '200':
+            description: OK
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/UserDTO'
+                example:
+                  - id: 3
+                    firstName: Mariana
+                    lastName: Almeida
+                    cpf: 763.399.330-84
+                    birthdate: 1995-07-18
+                    email: mariana@email.com
+                    password: senhaMariana789
+                    active: false
+
+         '400':
+            description: bad Request
+         '404':
+           description: not found
+
+
+  put:
+      summary: Updates a user
+      operationId: updateUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                cpf:
+                  type: string
+                birthdate:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                active:
+                  type: boolean
+
+            example:
+              - firstName: joao
+                lastName: guilherme
+                cpf: 408.446.570-42
+                birthdate: 2000-11-20
+                email: joao22@email.com
+                password: "mariana2"
+                active: true
+        required: true
+
+
+      responses:
+        '200':
+          description: OK
+
+        '404':
+          description: not found
+
+        '400':
+          description: bad request
+
+ /users/{Id}/password:
+   put:
+     summary: updating password
+     operationId: cancelUser
+     parameters:
+       - name: User Id
+         in: path
+         description: ID of user to return
+         required: true
+         schema:
+           type: integer
+           format: int64
+     requestBody:
+       content:
+         application/json:
+           schema:
+             type: string
+
+           example:
+               id: 1
+               password: "updatedPassword"
+       required: true
+     responses:
+       '200':
+         description: OK
+         content:
+           "*/*":
+             schema:
+               $ref: '#/components/schemas/UserDTO'
+       '403':
+         description: forbidden
+
+
+
+components:
+  schemas:
+    UserDTO:
+      required:
+        - firstName,
+        - lastName,
+        - cpf,
+        - birthdate,
+        - email,
+        - password,
+        - active
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        cpf:
+          type: string
+        birthdate:
+          type: object
+        email:
+          type: string
+        password:
+          type: string
+        active:
+          type: string
+    LoginDTO:
+      required:
+        - email,
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+

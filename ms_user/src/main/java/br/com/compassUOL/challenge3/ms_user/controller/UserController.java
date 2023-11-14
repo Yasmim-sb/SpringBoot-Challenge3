@@ -31,12 +31,12 @@ public class UserController {
         var updateUser = userService.updateUser(id, userDTO);
         return ResponseEntity.ok().body(updateUser);
     }
-//    @PutMapping("users/{id}/password")
-//    public ResponseEntity<UserDTO> updatePassword(@PathVariable Long id, @RequestParam String password){
-//
-//        var updateUser = userService.updatePwd(id, password);
-//        return ResponseEntity.ok().body(updateUser);
-//    }
+    @PutMapping("users/{id}/password")
+    public ResponseEntity<UserDTO> updatePassword(@RequestBody UserDTO userDTO,
+                                                  Long id){
+        var updateUser = userService.updatePwd(userDTO, id);
+        return ResponseEntity.ok(updateUser);
+    }
 
     @GetMapping("/users/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id){

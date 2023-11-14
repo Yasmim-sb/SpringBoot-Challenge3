@@ -21,6 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfigurations {
 
     private final SecurityFilter securityFilter;
+//    private final BCryptPasswordEnconder bCryptPasswordEnconder;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
@@ -31,8 +32,6 @@ public class SecurityConfigurations {
         .requestMatchers( "/v1/login/**").permitAll()
         .requestMatchers( "/v1/users/**").permitAll()
               .requestMatchers("/v1").permitAll()
-    //          .requestMatchers(HttpMethod.POST, "/v1").hasRole("ADM")
-      //        .anyRequest().authenticated()
         )
         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
