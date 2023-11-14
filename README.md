@@ -2,8 +2,7 @@
 
 Status: finished ✅
 >
-+ Description :
-+ This project is made with 5 endponts, a post to create new users, post to create login, put to update the password, put to update the user, get users by id.
++ Description : This project is made with 5 endponts, a post to create new users, post to create login, put to update the password, put to update the user, get users by id.
 >
 
 ### The fields used in the Entity User class are:
