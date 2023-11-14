@@ -5,10 +5,11 @@ import br.com.compassUOL.challenge3.ms_user.entity.User;
 import br.com.compassUOL.challenge3.ms_user.enums.ErroCode;
 import br.com.compassUOL.challenge3.ms_user.exception.UserBadRequestException;
 import br.com.compassUOL.challenge3.ms_user.exception.UserNotFoundException;
-import br.com.compassUOL.challenge3.ms_user.repository.LoginRepository;
 import br.com.compassUOL.challenge3.ms_user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +18,8 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper= UserMapper.INSTANCE;
+
+    private final PasswordEncoder passwordEncoder;
 
 
     public Object createUser(UserDTO user){
@@ -48,15 +51,15 @@ public class UserService {
         return convertion;
     }
 
-    public UserDTO updatePwd(Long id, String password) {
-        User userExisting = userRepository.findById(id)
+    public UserDTO updatePwd(UserDTO userDTO, Long id) {
+        User userExisting = userRepository.findById(userDTO.getId())
         .orElseThrow(() -> new UserNotFoundException());
 
+        String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
         userExisting.setId(userExisting.getId());
-        userExisting.setPassword(userExisting.getPassword());
+        userExisting.setPassword(encryptedPassword);
 
         var save = userRepository.save(userExisting);
-        var convertion = userMapper.userToUserDTO(save);
-        return convertion;
+        return userMapper.userToUserDTO(save);
     }
 }

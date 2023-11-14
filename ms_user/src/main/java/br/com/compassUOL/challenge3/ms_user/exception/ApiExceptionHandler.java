@@ -15,10 +15,10 @@ public class ApiExceptionHandler {
         var exc = new Erro(exception.getErroCode(), exception);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exc);
     }
-    @ExceptionHandler(Exception.class)
-    public final ResponseEntity<Object> handlerAllExceptions(){
-        var problem = new Erro(ErroCode.SYSTEM_ERROR);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(problem);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public final ResponseEntity<Object> handlerAllExceptions(){
+//        var problem = new Erro(ErroCode.SYSTEM_ERROR);
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(problem);
+//    }
 
 }
