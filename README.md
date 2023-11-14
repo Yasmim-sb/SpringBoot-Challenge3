@@ -8,23 +8,29 @@ Status: finished ✅
 
 ### The fields used in the Entity User class are:
 + Id
-+ firstName
-+ lastName
-+ cpf
-+ birthdate
-+ email
-+ password
-
->
-### To add a user you need to fill in the following fields:
-
 + firstName (Minimum of 3 characters)
 + lastName ( Minimum of 3 characters)
 + cpf (Valid Format Required)
 + birthdate ( YYYY-MM-DD )
-+ email (Valid Format Required)
++ email  (Valid Format Required)
 + password (Minimum of 6 characters)
 + active (boolean)
+
+### The fields used in the Entity Login class are:
+
++ email  (Valid Format Required)
++ password (Minimum of 6 characters)
+
+>
+### To add a user you need to fill in the following fields:
+
++ firstName 
++ lastName 
++ cpf 
++ birthdate 
++ email
++ password 
++ active 
 >
 ### Example of how to add users to the database using POST users:
 curl --location 'http://localhost:8080/v1/users' \
@@ -47,7 +53,7 @@ curl --location 'http://localhost:8080/v1/users' \
 + email 
 + password 
 >
-### Example of how to log in using POST:
+### Example of how to login using POST:
 curl --location 'http://localhost:8080/v1/users/login' \
 --data
 ```bash
@@ -96,4 +102,3 @@ curl --location --request PUT 'http://localhost:8080/v1/users/{id}/password' \
 
 
 
-After the "Products/" ID is used to capture, the product with that specific ID and perform the desired operation.
